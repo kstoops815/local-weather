@@ -18,7 +18,7 @@ const validateZip = () => {
 };
 
 const checkInp =() => {
-	if(zip % 1 != 0) {
+	if(zip.val().length != 5) {
 		window.alert("You must enter a 5 digit number!");
 	}
 };
