@@ -1,9 +1,11 @@
 "use strict";
 
+const weather = require("./weather");
+
+
 let zip = $("#zipCode");
 
 const disableBtn = () => {
-	console.log("disable");
     if(zip.val().length === 5) {
 		 $("#getWeather").prop("disabled", false);
 	} else {$("#getWeather").prop("disabled", true);
@@ -12,7 +14,6 @@ const disableBtn = () => {
 
 const validateZip = () => {
 	zip.keyup(() => {
-		console.log("anything");
 		disableBtn();
 	});
 };
@@ -25,10 +26,12 @@ const checkInp =() => {
 
 const pressEnter = () => {
 	zip.keypress((e) => {
+		let zipCode = zip.val();
 		disableBtn();
 		if(e.key === "Enter") {
 			checkInp();
-			console.log("pressEnter");
+			// console.log("pressEnter");
+			weather.searchZip(zipCode);
 			
 
 		}
@@ -37,10 +40,11 @@ const pressEnter = () => {
 
 const clickButton = () => {
 	$("#getWeather").click((e) => {
-		console.log("click button");
+		let zipCode = zip.val();
 		checkInp();
 		zip.val("");
 		disableBtn();
+		weather.searchZip(zipCode);
 
 	});
 };
