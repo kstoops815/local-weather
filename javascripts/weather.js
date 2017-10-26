@@ -5,7 +5,7 @@ const dom = require("./dom");
 
 const searchWeather = (zip) => {
 	return new Promise ((resolve, reject) => {
-		$.ajax(`http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${weatherKey}`).done((data) => {
+		$.ajax(`http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${weatherKey}&units=imperial`).done((data) => {
 			resolve(data);
 		}).fail((error) => {
 			reject(error);
@@ -16,12 +16,10 @@ const searchWeather = (zip) => {
 
 
 const searchZip = (zip) => {
-	let weatherInfo = [];
 	console.log("In searchZip");
 	searchWeather(zip).then((data) => {
-		weatherInfo.push(Object.values(data));
-		console.log("weatherInfo", weatherInfo);
-		showWeather(weatherInfo);
+		console.log("data", data);
+		showWeather(data);
 	}).catch((error) => {
 		console.log("error in search weather", error);
 	});
@@ -32,10 +30,22 @@ const setKey = (apiKey) => {
 	console.log("weatherKey", weatherKey);
 };
 
-const showWeather = (weatherArray) => {
-	console.log("weather array", weatherArray);
-	dom.domString(weatherArray);
+const showWeather = (weather) => {
+	console.log("weather", weather);
+	console.log("showWeather temp", weather.weather[0].description);
+	dom.domString(weather);
+};
+
+const futureWeather = (zip) => {
+	return new Promise ((resolve, reject) => {
+		$.ajax(`http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&APPID=${weatherKey}&units=imperial`).done((data) => {
+			console.log("forecast data", data);
+			resolve(data);
+		}).fail((error) => {
+			reject(error);
+		});
+	});
 };
 
 
-module.exports = {setKey, searchZip};
+module.exports = {setKey, searchZip, futureWeather};

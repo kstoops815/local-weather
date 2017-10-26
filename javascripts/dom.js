@@ -1,26 +1,27 @@
 "use strict";
 
-const domString = (weatherArray) => {
+const domString = (currentWeather) => {
 	let domString = "";
-	let weatherInfo = [];
-	for(let i=0; i < weatherArray.length; i++){
 		domString += `<div>`;
-		domString += 	`<h3>Today's Weather</h3>`;
-		domString +=		`<h4>${weatherArray[i].main.temp}</h4>`;
-		domString +=		`<p>${weatherArray[i].weather.description}</p>`;
-		domString += 		`<p>${weatherArray[i].main.pressure}</p>`;
-		domString += 		`<p>${weatherArray[i].wind.speed}</p>`;
+		domString += 	`<h3>Today's Weather in ${currentWeather.name}</h3>`;
+		domString +=		`<p>Current Temperature: ${currentWeather.main.temp}</p>`;
+		domString +=		`<p>Current Conditions: ${currentWeather.weather[0].description}</p>`;
+		domString += 		`<p>Current Air pressure: ${currentWeather.main.pressure}</p>`;
+		domString += 		`<p>Current Wind Speed: ${currentWeather.wind.speed}</p>`;
 		domString += `</div>`;
+		domString += `<button class="btn btn-default" id="threeDay" type="submit">3 Day Forecast</button>`;
 
-	}
+		printToDom(domString);
 
-	printToDom(domString);
-	console.log("in domstring", domString);
+	};
 
-};
+	
+	
+
 
 const printToDom = (strang) => {
-	$("#weatherGoesHere").html(strang);
+//console.log("in domstring", domString);
+$("#weatherGoesHere").html(strang);
 };
 
 module.exports = {domString};

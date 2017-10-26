@@ -6,7 +6,9 @@ const weather = require("./weather");
 let zip = $("#zipCode");
 
 const disableBtn = () => {
-    if(zip.val().length === 5) {
+	let query = zip.val();
+    let isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(query);
+    if(isValid) {
 		 $("#getWeather").prop("disabled", false);
 	} else {$("#getWeather").prop("disabled", true);
 	}	
@@ -19,7 +21,7 @@ const validateZip = () => {
 };
 
 const checkInp =() => {
-	if(zip.val().length != 5) {
+	if(zip.val().length != 5 || zip.val() % zip.val() != 0) {
 		window.alert("You must enter a 5 digit number!");
 	}
 };
@@ -48,5 +50,9 @@ const clickButton = () => {
 
 	});
 };
+
+// const threeDayClick = () => {
+// 	${"#threeDay"}.click((e) => {})
+// }
 
 module.exports = {disableBtn, pressEnter, clickButton, validateZip};

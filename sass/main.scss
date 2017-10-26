@@ -11,3 +11,30 @@ h1 {
 .hidden {
 	display: none;
 }
+
+#threeDay {
+  background: #34d9d6;
+  background-image: -webkit-linear-gradient(top, #34d9d6, #2b40b8);
+  background-image: -moz-linear-gradient(top, #34d9d6, #2b40b8);
+  background-image: -ms-linear-gradient(top, #34d9d6, #2b40b8);
+  background-image: -o-linear-gradient(top, #34d9d6, #2b40b8);
+  background-image: linear-gradient(to bottom, #34d9d6, #2b40b8);
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #d42447;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+#threeDay:hover {
+  background: #4ffc3c;
+  background-image: -webkit-linear-gradient(top, #4ffc3c, #bdd934);
+  background-image: -moz-linear-gradient(top, #4ffc3c, #bdd934);
+  background-image: -ms-linear-gradient(top, #4ffc3c, #bdd934);
+  background-image: -o-linear-gradient(top, #4ffc3c, #bdd934);
+  background-image: linear-gradient(to bottom, #4ffc3c, #bdd934);
+  text-decoration: none;
+}

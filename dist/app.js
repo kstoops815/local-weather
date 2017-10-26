@@ -26,27 +26,28 @@ module.exports = {retrieveKeys};
 },{"./weather":5}],2:[function(require,module,exports){
 "use strict";
 
-const domString = (weatherArray) => {
+const domString = (currentWeather) => {
 	let domString = "";
-	let weatherInfo = [];
-	for(let i=0; i < weatherArray.length; i++){
 		domString += `<div>`;
-		domString += 	`<h3>Today's Weather</h3>`;
-		domString +=		`<h4>${weatherArray[i].main.temp}</h4>`;
-		domString +=		`<p>${weatherArray[i].weather.description}</p>`;
-		domString += 		`<p>${weatherArray[i].main.pressure}</p>`;
-		domString += 		`<p>${weatherArray[i].wind.speed}</p>`;
+		domString += 	`<h3>Today's Weather in ${currentWeather.name}</h3>`;
+		domString +=		`<p>Current Temperature: ${currentWeather.main.temp}</p>`;
+		domString +=		`<p>Current Conditions: ${currentWeather.weather[0].description}</p>`;
+		domString += 		`<p>Current Air pressure: ${currentWeather.main.pressure}</p>`;
+		domString += 		`<p>Current Wind Speed: ${currentWeather.wind.speed}</p>`;
 		domString += `</div>`;
+		domString += `<button class="btn btn-default" id="threeDay" type="submit">3 Day Forecast</button>`;
 
-	}
+		printToDom(domString);
 
-	printToDom(domString);
-	console.log("in domstring", domString);
+	};
 
-};
+	
+	
+
 
 const printToDom = (strang) => {
-	$("#weatherGoesHere").html(strang);
+//console.log("in domstring", domString);
+$("#weatherGoesHere").html(strang);
 };
 
 module.exports = {domString};
@@ -59,7 +60,9 @@ const weather = require("./weather");
 let zip = $("#zipCode");
 
 const disableBtn = () => {
-    if(zip.val().length === 5) {
+	let query = zip.val();
+    let isValid = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(query);
+    if(isValid) {
 		 $("#getWeather").prop("disabled", false);
 	} else {$("#getWeather").prop("disabled", true);
 	}	
@@ -72,7 +75,7 @@ const validateZip = () => {
 };
 
 const checkInp =() => {
-	if(zip.val().length != 5) {
+	if(zip.val().length != 5 || zip.val() % zip.val() != 0) {
 		window.alert("You must enter a 5 digit number!");
 	}
 };
@@ -102,6 +105,10 @@ const clickButton = () => {
 	});
 };
 
+// const threeDayClick = () => {
+// 	${"#threeDay"}.click((e) => {})
+// }
+
 module.exports = {disableBtn, pressEnter, clickButton, validateZip};
 },{"./weather":5}],4:[function(require,module,exports){
 "use strict";
@@ -126,7 +133,7 @@ const dom = require("./dom");
 
 const searchWeather = (zip) => {
 	return new Promise ((resolve, reject) => {
-		$.ajax(`http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${weatherKey}`).done((data) => {
+		$.ajax(`http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${weatherKey}&units=imperial`).done((data) => {
 			resolve(data);
 		}).fail((error) => {
 			reject(error);
@@ -137,12 +144,10 @@ const searchWeather = (zip) => {
 
 
 const searchZip = (zip) => {
-	let weatherInfo = [];
 	console.log("In searchZip");
 	searchWeather(zip).then((data) => {
-		weatherInfo.push(Object.values(data));
-		console.log("weatherInfo", weatherInfo);
-		showWeather(weatherInfo);
+		console.log("data", data);
+		showWeather(data);
 	}).catch((error) => {
 		console.log("error in search weather", error);
 	});
@@ -153,11 +158,23 @@ const setKey = (apiKey) => {
 	console.log("weatherKey", weatherKey);
 };
 
-const showWeather = (weatherArray) => {
-	console.log("weather array", weatherArray);
-	dom.domString(weatherArray);
+const showWeather = (weather) => {
+	console.log("weather", weather);
+	console.log("showWeather temp", weather.weather[0].description);
+	dom.domString(weather);
+};
+
+const futureWeather = (zip) => {
+	return new Promise ((resolve, reject) => {
+		$.ajax(`http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&APPID=${weatherKey}&units=imperial`).done((data) => {
+			console.log("forecast data", data);
+			resolve(data);
+		}).fail((error) => {
+			reject(error);
+		});
+	});
 };
 
 
-module.exports = {setKey, searchZip};
+module.exports = {setKey, searchZip, futureWeather};
 },{"./dom":2}]},{},[4]);
