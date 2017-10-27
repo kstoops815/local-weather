@@ -11,3 +11,4 @@ events.pressEnter();
 events.clickButton();
 events.validateZip();
 apiKeys.retrieveKeys();
+events.threeDayClick();

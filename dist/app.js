@@ -30,16 +30,25 @@ const domString = (currentWeather) => {
 	let domString = "";
 		domString += `<div>`;
 		domString += 	`<h3>Today's Weather in ${currentWeather.name}</h3>`;
-		domString +=		`<p>Current Temperature: ${currentWeather.main.temp}</p>`;
+		domString +=		`<p>Current Temperature: ${currentWeather.main.temp}&deg F</p>`;
 		domString +=		`<p>Current Conditions: ${currentWeather.weather[0].description}</p>`;
 		domString += 		`<p>Current Air pressure: ${currentWeather.main.pressure}</p>`;
 		domString += 		`<p>Current Wind Speed: ${currentWeather.wind.speed}</p>`;
 		domString += `</div>`;
-		domString += `<button class="btn btn-default" id="threeDay" type="submit">3 Day Forecast</button>`;
+		//domString += `<button class="btn btn-default" id="threeDay" type="submit">3 Day Forecast</button>`;
 
 		printToDom(domString);
 
 	};
+
+
+	// const forecastString = (future) => {
+	// 	let futureForecast = "";
+
+	// 	forEach(() => {
+	// 		futureForecast += 
+	// 	})
+	// }
 
 	
 	
@@ -58,6 +67,7 @@ const weather = require("./weather");
 
 
 let zip = $("#zipCode");
+let zipCode = zip.val();
 
 const disableBtn = () => {
 	let query = zip.val();
@@ -83,13 +93,13 @@ const checkInp =() => {
 const pressEnter = () => {
 	zip.keypress((e) => {
 		let zipCode = zip.val();
+
 		disableBtn();
 		if(e.key === "Enter") {
 			checkInp();
 			// console.log("pressEnter");
 			weather.searchZip(zipCode);
-			
-
+			//zip.val("");
 		}
 	});
 };
@@ -98,18 +108,26 @@ const clickButton = () => {
 	$("#getWeather").click((e) => {
 		let zipCode = zip.val();
 		checkInp();
-		zip.val("");
+		//zip.val("");
+		console.log(zip.val());
 		disableBtn();
 		weather.searchZip(zipCode);
+
 
 	});
 };
 
-// const threeDayClick = () => {
-// 	${"#threeDay"}.click((e) => {})
-// }
+const threeDayClick = () => {
+	console.log("in threeDayClick");
+	let zipCode = zip.val();
+ 	$("#threeDay").click((e) => {
+ 		console.log("threeDay", e);
+ 		console.log("three day zip code", zipCode);
+		weather.futureWeather(zip.val());
+	});	
+ };
 
-module.exports = {disableBtn, pressEnter, clickButton, validateZip};
+module.exports = {disableBtn, pressEnter, clickButton, validateZip, threeDayClick};
 },{"./weather":5}],4:[function(require,module,exports){
 "use strict";
 
@@ -124,6 +142,7 @@ events.pressEnter();
 events.clickButton();
 events.validateZip();
 apiKeys.retrieveKeys();
+events.threeDayClick();
 
 },{"./apiKeys":1,"./events":3}],5:[function(require,module,exports){
 "use strict";
@@ -144,10 +163,11 @@ const searchWeather = (zip) => {
 
 
 const searchZip = (zip) => {
-	console.log("In searchZip");
+	console.log("In searchZip", typeof(zip));
 	searchWeather(zip).then((data) => {
 		console.log("data", data);
 		showWeather(data);
+
 	}).catch((error) => {
 		console.log("error in search weather", error);
 	});
@@ -159,8 +179,8 @@ const setKey = (apiKey) => {
 };
 
 const showWeather = (weather) => {
-	console.log("weather", weather);
 	console.log("showWeather temp", weather.weather[0].description);
+	$("#threeDay").removeClass("hidden");
 	dom.domString(weather);
 };
 

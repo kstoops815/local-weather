@@ -16,10 +16,11 @@ const searchWeather = (zip) => {
 
 
 const searchZip = (zip) => {
-	console.log("In searchZip");
+	console.log("In searchZip", typeof(zip));
 	searchWeather(zip).then((data) => {
 		console.log("data", data);
 		showWeather(data);
+
 	}).catch((error) => {
 		console.log("error in search weather", error);
 	});
@@ -31,8 +32,8 @@ const setKey = (apiKey) => {
 };
 
 const showWeather = (weather) => {
-	console.log("weather", weather);
 	console.log("showWeather temp", weather.weather[0].description);
+	$("#threeDay").removeClass("hidden");
 	dom.domString(weather);
 };
 
